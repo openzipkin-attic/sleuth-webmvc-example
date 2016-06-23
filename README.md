@@ -1,5 +1,7 @@
 # sleuth-webmvc-example
-Example using Spring Cloud Sleuth to trace RPCs from Spring Web MVC
+Example using Spring Cloud Sleuth to trace RPCs from Spring Web MVC.
+
+This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin), though you can use it to toy around with a relatively simple architecture.
 
 # Running the example
 This example has two services: frontend and backend. They both report trace data to zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
