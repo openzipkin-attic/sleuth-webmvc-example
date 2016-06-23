@@ -16,7 +16,8 @@ public class FrontEnd {
 
   @Autowired RestTemplate template;
 
-  @RequestMapping("/") String callBackEnd() {
+  @RequestMapping("/")
+  public String callBackEnd() {
     return template.getForObject("http://localhost:9000/api", String.class);
   }
 
