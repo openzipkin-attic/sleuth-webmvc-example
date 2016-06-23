@@ -12,12 +12,12 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @RestController
-public class FrontEnd {
+public class Frontend {
 
   @Autowired RestTemplate template;
 
   @RequestMapping("/")
-  public String callBackEnd() {
+  public String callBackend() {
     return template.getForObject("http://localhost:9000/api", String.class);
   }
 
@@ -35,6 +35,6 @@ public class FrontEnd {
 
   /** The spring application name is used for the Zipkin service name */
   public static void main(String[] args) {
-    SpringApplication.run(FrontEnd.class, "--spring.application.name=frontend");
+    SpringApplication.run(Frontend.class, "--spring.application.name=frontend");
   }
 }
