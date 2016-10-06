@@ -15,7 +15,7 @@ This example intentionally avoids advanced topics like async and load balancing,
 # Running the example
 This example has two services: frontend and backend. They both report trace data to zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
 
-Once the services are started, open http://localhost:8080/
+Once the services are started, open http://localhost:8081/
 * This will call the backend (http://localhost:9000/api) and show the result, which defaults to a formatted date.
 
 Next, you can view traces that went through the backend via http://localhost:9411/?serviceName=backend
