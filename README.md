@@ -22,10 +22,10 @@ Next, you can view traces that went through the backend via http://localhost:941
 * This is a locally run zipkin service which keeps traces in memory
 
 ## Starting the Services
-In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
+In a separate tab or window, start each of [sleuth.webmvc.frontend.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.backend.Backend](/src/main/java/sleuth/webmvc/Backend.java):
 ```bash
-$ ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
-$ ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.Backend
+$ ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.frontend.Frontend
+$ ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.backend.Backend
 ```
 
 Next, run [Zipkin](http://zipkin.io/), which stores and queries traces reported by the above services.

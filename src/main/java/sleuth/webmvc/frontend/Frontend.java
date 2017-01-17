@@ -1,11 +1,11 @@
-package sleuth.webmvc;
+package sleuth.webmvc.frontend;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.sleuth.Sampler;
 import org.springframework.cloud.sleuth.sampler.AlwaysSampler;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,11 @@ import org.springframework.web.client.RestTemplate;
 @CrossOrigin // So that javascript clients can originate the trace
 public class Frontend {
 
-  @Autowired RestTemplate template;
+  private final RestTemplate template;
+
+  public Frontend(@Lazy RestTemplate template) {
+    this.template = template;
+  }
 
   @RequestMapping("/")
   public String callBackend() {
