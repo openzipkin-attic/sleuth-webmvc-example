@@ -10,4 +10,5 @@ test:
   override:
     - ./scripts/runAcceptanceTests.sh
   post:
-    - find . -type f -regex "target/*.log" -exec cp {} ${CIRCLE_ARTIFACTS}/ \;
+    - mkdir -p ${CIRCLE_ARTIFACTS}
+    - cp "target/*.log" ${CIRCLE_ARTIFACTS}/
