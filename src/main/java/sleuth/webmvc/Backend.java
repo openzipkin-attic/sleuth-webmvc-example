@@ -15,9 +15,11 @@ public class Backend {
     return new Date().toString();
   }
 
-  /** The spring application name is used for the Zipkin service name */
   public static void main(String[] args) {
     SpringApplication.run(Backend.class,
-        "--spring.application.name=backend", "--server.port=9000");
+        // The spring application name is used for the Zipkin service name
+        "--spring.application.name=backend",
+        "--server.port=9000"
+    );
   }
 }
