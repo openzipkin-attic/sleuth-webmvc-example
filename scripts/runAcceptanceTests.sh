@@ -34,6 +34,7 @@ function curl_health_endpoint() {
     done
     if [[ "${READY_FOR_TESTS}" == 1 ]] ; then
         echo "Failed to start the app..."
+        kill_all
         copy_logs
     fi
     return ${READY_FOR_TESTS}
