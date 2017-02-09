@@ -9,3 +9,5 @@ dependencies:
 test:
   override:
     - ./scripts/runAcceptanceTests.sh
+  post:
+    - cp ${ROOT}/target/*.log ${CIRCLE_ARTIFACTS}/

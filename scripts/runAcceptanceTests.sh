@@ -35,7 +35,6 @@ function curl_health_endpoint() {
     if [[ "${READY_FOR_TESTS}" == 1 ]] ; then
         echo "Failed to start the app..."
         kill_all
-        copy_logs
     fi
     return ${READY_FOR_TESTS}
 }
@@ -47,15 +46,6 @@ function curl_local_health_endpoint() {
 
 function send_a_test_request() {
     curl -m 5 "127.0.0.1:8081" && curl -m 5 "127.0.0.1:8081" && echo -e "\n\nSuccessfully sent two test requests!!!"
-}
-
-function copy_logs() {
-     if [[ -z "${CIRCLE_ARTIFACTS}" ]] ; then
-            echo "No need to copy logs"
-        else
-            cp ${ROOT}/target/*.log ${CIRCLE_ARTIFACTS}
-     fi
-    cat
 }
 
 # kills all apps
