@@ -10,5 +10,4 @@ test:
   override:
     - ./scripts/runAcceptanceTests.sh
   post:
-    - mkdir -p ${CIRCLE_ARTIFACTS}
-    - cp "target/*.log" ${CIRCLE_ARTIFACTS}/
+    - cp "${HOME}/${CIRCLE_PROJECT_REPONAME}/target/*.log" ${CIRCLE_ARTIFACTS}/

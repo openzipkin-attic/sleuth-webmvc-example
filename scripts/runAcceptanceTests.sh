@@ -9,6 +9,9 @@
 set -e
 
 # FUNCTIONS
+function build_the_app() {
+  mvn clean install
+}
 
 function run_maven_exec() {
   local CLASS_NAME=$1
@@ -86,6 +89,7 @@ _______ _________ _______  _______ _________
 EOF
 
 echo -e "\n\nRunning apps\n\n"
+build_the_app
 run_maven_exec "Frontend"
 curl_local_health_endpoint 8081
 run_maven_exec "Backend"
