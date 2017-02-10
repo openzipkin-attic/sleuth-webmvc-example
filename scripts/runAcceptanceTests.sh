@@ -10,12 +10,12 @@ set -e
 
 # FUNCTIONS
 function build_the_app() {
-  mvn clean install
+  mvn clean install ${ENV_VARS}
 }
 
 function run_maven_exec() {
   local CLASS_NAME=$1
-  local EXPRESSION="nohup mvn exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} >${LOGS_DIR}/${CLASS_NAME}.log &"
+  local EXPRESSION="nohup mvn exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} >${LOGS_DIR}/${CLASS_NAME}.log &"
   echo -e "\n\nTrying to run [$EXPRESSION]"
   eval ${EXPRESSION}
   pid=$!
@@ -62,6 +62,7 @@ LOGS_DIR="${ROOT}/target/"
 HEALTH_HOST="127.0.0.1"
 RETRIES=10
 WAIT_TIME=5
+ENV_VARS=${ENV_VARS:--Dsleuth.version=1.1.3.BUILD-SNAPSHOT}
 
 mkdir -p target
 
