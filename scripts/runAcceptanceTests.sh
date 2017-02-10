@@ -10,12 +10,12 @@ set -e
 
 # FUNCTIONS
 function build_the_app() {
-  mvn clean install ${ENV_VARS}
+  ./mvnw clean install ${ENV_VARS}
 }
 
 function run_maven_exec() {
   local CLASS_NAME=$1
-  local EXPRESSION="nohup mvn exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} >${LOGS_DIR}/${CLASS_NAME}.log &"
+  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} >${LOGS_DIR}/${CLASS_NAME}.log &"
   echo -e "\n\nTrying to run [$EXPRESSION]"
   eval ${EXPRESSION}
   pid=$!
