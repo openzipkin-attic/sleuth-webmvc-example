@@ -62,7 +62,7 @@ LOGS_DIR="${ROOT}/target/"
 HEALTH_HOST="127.0.0.1"
 RETRIES=10
 WAIT_TIME=5
-ENV_VARS=${ENV_VARS:--Dsleuth.version=1.1.3.BUILD-SNAPSHOT}
+ENV_VARS=${ENV_VARS:--Dsleuth.version=1.2.1.BUILD-SNAPSHOT}
 
 mkdir -p target
 
