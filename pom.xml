@@ -24,7 +24,7 @@
   </dependencies>
 
   <properties>
-    <sleuth.version>1.1.2.RELEASE</sleuth.version>
+    <sleuth.version>1.1.4.RELEASE</sleuth.version>
   </properties>
 
   <dependencyManagement>
