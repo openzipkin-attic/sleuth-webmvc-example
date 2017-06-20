@@ -12,7 +12,16 @@
   <name>sleuth-webmvc-example</name>
   <description>Example using Spring Cloud Sleuth to trace RPCs from Spring Web MVC</description>
 
+  <properties>
+    <sleuth.version>1.2.1.RELEASE</sleuth.version>
+  </properties>
+
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>1.5.3.RELEASE</version>
+    </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
@@ -22,10 +31,6 @@
       <artifactId>spring-cloud-sleuth-zipkin</artifactId>
     </dependency>
   </dependencies>
-
-  <properties>
-    <sleuth.version>1.1.4.RELEASE</sleuth.version>
-  </properties>
 
   <dependencyManagement>
     <dependencies>
