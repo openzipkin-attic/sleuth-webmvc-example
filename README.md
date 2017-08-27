@@ -34,3 +34,11 @@ Next, run [Zipkin](http://zipkin.io/), which stores and queries traces reported 
 wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
 java -jar zipkin.jar
 ```
+
+## Configuration tips
+* The service name in the Zipkin UI defaults to the application name
+  * `spring.application.name=frontend`
+* All incoming requests are sampled and that decision is honored downstream.
+  * `spring.sleuth.sampler.percentage=1.0`
+* The below pattern adds trace and span identifiers into log output
+  * `logging.pattern.level=%d{ABSOLUTE} [%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n`
