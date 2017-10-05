@@ -31,10 +31,15 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
-    <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v2/spans) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
+    </dependency>
+    <!-- Sends to an Amazon X-Ray local UDP Daemon -->
+    <dependency>
+      <groupId>io.zipkin.aws</groupId>
+      <artifactId>zipkin-reporter-xray-udp</artifactId>
+      <version>0.21.3</version>
     </dependency>
   </dependencies>
 
