@@ -13,20 +13,14 @@
   <description>Example using Spring Cloud Sleuth to trace RPCs from Spring Web MVC</description>
 
   <properties>
-    <sleuth.version>1.2.4.RELEASE</sleuth.version>
+    <sleuth.version>1.2.5.RELEASE</sleuth.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>1.5.4.RELEASE</version>
-    </dependency>
-    <!-- Micrometer automatically adds request metrics when in the classpath -->
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-spring-legacy</artifactId>
-      <version>0.10.0.RELEASE</version>
+      <version>1.5.7.RELEASE</version>
     </dependency>
     <!-- Sleuth automatically adds trace interceptors when in the classpath -->
     <dependency>
