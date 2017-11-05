@@ -13,7 +13,7 @@
   <description>Example using Spring Cloud Sleuth to trace RPCs from Spring Web MVC</description>
 
   <properties>
-    <sleuth.version>1.2.5.RELEASE</sleuth.version>
+    <sleuth.version>1.3.0.RC1</sleuth.version>
   </properties>
 
   <dependencies>
@@ -30,7 +30,7 @@
     <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v1/spans) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+      <artifactId>spring-cloud-sleuth-zipkin2</artifactId>
     </dependency>
   </dependencies>
 
@@ -48,12 +48,23 @@
 
   <repositories>
     <repository>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/libs-snapshot</url>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
   </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 </project>
