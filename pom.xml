@@ -30,7 +30,7 @@
     <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v1/spans) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-sleuth-zipkin2</artifactId>
+      <artifactId>spring-cloud-sleuth-zipkin</artifactId>
     </dependency>
   </dependencies>
 
