@@ -31,7 +31,7 @@ $ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
 Next, run [Zipkin](http://zipkin.io/), which stores and queries traces reported by the above services.
 
 ```bash
-wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
+curl -sSL https://zipkin.io/quickstart.sh | bash -s
 java -jar zipkin.jar
 ```
 
