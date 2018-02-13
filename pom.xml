@@ -33,6 +33,11 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
     </dependency>
+    <!-- Integrate with OpenTracing -->
+    <dependency>
+      <groupId>io.opentracing.brave</groupId>
+      <artifactId>brave-opentracing</artifactId>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
