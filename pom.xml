@@ -33,6 +33,21 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <!-- Version is aligned using Brave's Bill of Materials (io.zipkin.brave:brave-bom)
+         To test a later version of brave, override it like -Dbrave.version=4.XX.X-SNAPSHOT
+         -->
+    <dependency>
+      <groupId>io.zipkin.brave</groupId>
+      <artifactId>brave-instrumentation-mysql8</artifactId>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
