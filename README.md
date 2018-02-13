@@ -49,3 +49,4 @@ works with brave. It can also use transports besides http to send data to a Zipk
 Here are a few small examples that showcase commonly requested features:
 
 * [MySQL Tracing](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-mysql-tracing)
+* [Customizing with OpenTracing](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-opentracing)
