@@ -39,6 +39,13 @@ java -jar zipkin.jar
 * The service name in the Zipkin UI defaults to the application name
   * `spring.application.name=frontend`
 * All incoming requests are sampled and that decision is honored downstream.
-  * `spring.sleuth.sampler.percentage=1.0`
+  * `spring.sleuth.sampler.probability=1.0`
 * The below pattern adds trace and span identifiers into log output
   * `logging.pattern.level=%d{ABSOLUTE} [%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n`
+
+# Going further
+Sleuth layers on the [Brave](https://github.com/openzipkin/brave) project, so can re-use any code that
+works with brave. It can also use transports besides http to send data to a Zipkin compatible service.
+Here are a few small examples that showcase commonly requested features:
+
+* [MySQL Tracing](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-mysql-tracing)
