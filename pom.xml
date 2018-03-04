@@ -13,7 +13,10 @@
   <description>Example using Spring Cloud Sleuth to trace RPCs from Spring Web MVC</description>
 
   <properties>
-    <sleuth.version>2.0.0.M6</sleuth.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <sleuth.version>2.0.0.M8</sleuth.version>
   </properties>
 
   <dependencies>
