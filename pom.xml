@@ -33,6 +33,20 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
     </dependency>
+
+    <!-- Adds dubbo infrastructure -->
+    <dependency>
+      <groupId>com.alibaba.boot</groupId>
+      <artifactId>dubbo-spring-boot-starter</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+    <!-- Version is aligned using Brave's Bill of Materials (io.zipkin.brave:brave-bom)
+         To test a later version of brave, override it like -Dbrave.version=4.XX.X-SNAPSHOT
+         -->
+    <dependency>
+      <groupId>io.zipkin.brave</groupId>
+      <artifactId>brave-instrumentation-dubbo-rpc</artifactId>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
