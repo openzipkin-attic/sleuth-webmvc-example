@@ -1,23 +1,28 @@
 package sleuth.webmvc;
 
+import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 import java.util.Date;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
-@RestController
-public class Backend {
+@EnableDubboConfiguration
+@Service(interfaceClass = Api.class)
+public class Backend implements Api {
 
-  @RequestMapping("/api") public String printDate() {
+  @Override public String printDate() {
     return new Date().toString();
   }
 
   public static void main(String[] args) {
     SpringApplication.run(Backend.class,
         "--spring.application.name=backend",
-        "--server.port=9000"
+        // These args allow dubbo to start without any web framework
+        "--spring.main.web-environment=false",
+        "--spring.dubbo.server=true",
+        "--spring.dubbo.registry=N/A",
+        "--spring.dubbo.protocol.port=9000"
     );
   }
 }
