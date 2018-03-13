@@ -28,6 +28,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-amqp</artifactId>
+    </dependency>
     <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v2/spans) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
