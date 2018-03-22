@@ -17,6 +17,9 @@
     <maven.compiler.target>1.8</maven.compiler.target>
 
     <sleuth.version>2.1.2.RELEASE</sleuth.version>
+    <!-- must match https://github.com/grpc/grpc-java/blob/master/SECURITY.md#netty -->
+    <grpc.version>1.22.1</grpc.version>
+    <netty-tcnative-boringssl-static.version>2.0.25.Final</netty-tcnative-boringssl-static.version>
   </properties>
 
   <dependencies>
@@ -32,6 +35,42 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.zipkin.gcp</groupId>
+      <artifactId>zipkin-sender-stackdriver</artifactId>
+      <version>0.6.2</version>
+    </dependency>
+
+    <!-- Add dependencies needed for GCP connection -->
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>0.9.0</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava-jdk5</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- actually plumb a transport -->
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty</artifactId>
+      <version>${grpc.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-tcnative-boringssl-static</artifactId>
+      <version>${netty-tcnative-boringssl-static.version}</version>
+    </dependency>
+
+    <!-- for MoreCallCredentials -->
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-auth</artifactId>
+      <version>${grpc.version}</version>
     </dependency>
   </dependencies>
 

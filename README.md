@@ -1,8 +1,8 @@
 # Basic example showing distributed tracing across Spring Boot apps
-This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Zipkin](http://zipkin.io/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
+This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Stackdriver Trace](https://cloud.google.com/trace/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
 
 Here's an example of what it looks like
-<img width="928" alt="Screenshot 2019-06-24 at 4 00 27 PM" src="https://user-images.githubusercontent.com/64215/60001539-3c756500-9699-11e9-92f2-d04b6c002214.png">
+<img width="587" alt="stackdriver screen shot" src="https://user-images.githubusercontent.com/64215/39345035-d316c4f0-4a18-11e8-955f-edff054be1c9.png">
 
 This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin). There's probably room to enroll if it hasn't completed, yet, and you are interested in the general topic.
 
@@ -13,30 +13,23 @@ Web requests are served by [Spring MVC](https://spring.io/guides/gs/rest-service
 This example intentionally avoids advanced topics like async and load balancing, eventhough Spring Cloud Sleuth supports that, too. Once you get familiar with things, you can play with more interesting [Spring Cloud](http://projects.spring.io/spring-cloud/) components.
 
 # Running the example
-This example has two services: frontend and backend. They both report trace data to zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
+This example has two services: frontend and backend. They both report trace data to Stackdriver. To setup the demo, you need to start Frontend and Backend.
 
 Once the services are started, open http://localhost:8081/
 * This will call the backend (http://localhost:9000/api) and show the result, which defaults to a formatted date.
 
-Next, you can view traces that went through the backend via http://localhost:9411/?serviceName=backend
-* This is a locally run zipkin service which keeps traces in memory
+Next, you can view traces that went through the backend via https://console.cloud.google.com/traces/traces
+* This is a cloud hosted trace service account.
 
 ## Starting the Services
 In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
 ```bash
-$ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
-$ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
-```
-
-Next, run [Zipkin](http://zipkin.io/), which stores and queries traces reported by the above services.
-
-```bash
-curl -sSL https://zipkin.io/quickstart.sh | bash -s
-java -jar zipkin.jar
+$ GOOGLE_APPLICATION_CREDENTIALS=~/my-account.json ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
+$ GOOGLE_APPLICATION_CREDENTIALS=~/my-account.json ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
 ```
 
 ## Configuration tips
-* The service name in the Zipkin UI defaults to the application name
+* The component name in the StackDriver UI defaults to the application name
   * `spring.application.name=frontend`
 * All incoming requests are sampled and that decision is honored downstream.
   * `spring.sleuth.sampler.probability=1.0`

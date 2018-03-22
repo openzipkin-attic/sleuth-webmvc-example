@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableAutoConfiguration
 @RestController
 @CrossOrigin // So that javascript can be hosted elsewhere
+@Import(StackdriverConfig.class)
 public class Frontend {
 
   @Autowired RestTemplate restTemplate;

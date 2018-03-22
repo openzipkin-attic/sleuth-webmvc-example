@@ -3,11 +3,13 @@ package sleuth.webmvc;
 import java.util.Date;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
 @RestController
+@Import(StackdriverConfig.class)
 public class Backend {
 
   @RequestMapping("/api") public String printDate() {
