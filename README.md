@@ -55,6 +55,12 @@ details to the existing trace.
 
 https://github.com/openzipkin/brave/tree/master/instrumentation/mysql
 
+## Dubbo Tracing
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-dubbo-tracing) changes the example to call a Dubbo backend instead of WebMVC.
+It uses Brave's RPC filter to add details to the existing trace.
+
+https://github.com/openzipkin/brave/tree/master/instrumentation/dubbo-rpc
+
 ## Customizing with OpenTracing
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-opentracing) changes the example to add a lookup tag using the default
 `SpanCustomizer` and OpenTracing's Tracer api. Users can choose which
