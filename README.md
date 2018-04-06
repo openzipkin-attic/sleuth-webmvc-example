@@ -55,6 +55,13 @@ details to the existing trace.
 
 https://github.com/openzipkin/brave/tree/master/instrumentation/mysql
 
+## RabbitMQ Tracing
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-rabbit-tracing) changes the example to invoke the backend with RabbitMQ
+instead of WebMVC. Sleuth automatically configures Brave's
+spring-rabbit to add trace details.
+
+https://github.com/openzipkin/brave/tree/master/instrumentation/spring-rabbit
+
 ## Dubbo Tracing
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-dubbo-tracing) changes the example to call a Dubbo backend instead of WebMVC.
 It uses Brave's RPC filter to add details to the existing trace.
