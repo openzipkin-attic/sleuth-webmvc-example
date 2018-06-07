@@ -17,5 +17,5 @@ services:
   rabbitmq:
     image: rabbitmq:management
     ports:
-      - 9672:5672
-      - 25672:15672
+      - 5672:5672
+      - 15672:15672
