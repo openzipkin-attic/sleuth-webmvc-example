@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # requires:
-# git, maven, docker-compose
+# git, docker-compose, python
+
+set -o errexit
 
 (git --help > /dev/null 2>&1 && echo "Git installed") || (echo "No git detected :(" && exit 1)
-(mvn --help > /dev/null 2>&1 && echo "Maven installed") || (echo "No maven detected :(" && exit 1)
 (docker-compose --help > /dev/null 2>&1 && echo "Docker Compose installed") || (echo "No docker-compose detected :(" && exit 1)
 (python --help > /dev/null 2>&1 && echo "Python installed") || (echo "No python detected :(" && exit 1)
 
-set -o errexit
 
 # FUNCTIONS
 function build_the_app() {
@@ -17,7 +17,7 @@ function build_the_app() {
 
 function run_maven_exec() {
   local CLASS_NAME=$1
-  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG >${LOGS_DIR}/${CLASS_NAME}.log &"
+  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG -Dspring.rabbitmq.port=9672 >${LOGS_DIR}/${CLASS_NAME}.log &"
   echo -e "\n\nTrying to run [$EXPRESSION]"
   eval ${EXPRESSION}
   pid=$!
@@ -110,6 +110,7 @@ HEALTH_HOST="127.0.0.1"
 RETRIES=10
 WAIT_TIME=5
 CURRENT_SLEUTH_VERSION=$( extractMavenProperty "sleuth.version" )
+RABBIT_PORT="${RABBIT_PORT:-9672}"
 echo "Current Sleuth Version is [${CURRENT_SLEUTH_VERSION}]"
 NEW_SLEUTH_VERSION="${CURRENT_SLEUTH_VERSION%.*}.BUILD-SNAPSHOT"
 echo "New Sleuth Version is [${NEW_SLEUTH_VERSION}]"
