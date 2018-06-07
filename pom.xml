@@ -24,6 +24,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      </dependency>
     <!-- Sleuth automatically adds trace interceptors when in the classpath -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
@@ -49,6 +53,14 @@
   </dependencyManagement>
 
   <repositories>
+    <repository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
     <repository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
