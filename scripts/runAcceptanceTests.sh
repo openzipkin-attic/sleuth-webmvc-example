@@ -53,6 +53,10 @@ function send_a_test_request() {
     curl --fail -m 5 "127.0.0.1:8081" && curl --fail -m 5 "127.0.0.1:8081" && echo -e "\n\nSuccessfully sent two test requests!!!"
 }
 
+function send_a_test_request_to_message() {
+    curl --fail -m 5 "127.0.0.1:8081/message" && echo -e "\n\nSuccessfully triggered a message!!! Now will wait for 5 seconds for Frontend to get it..." && sleep 5
+}
+
 function run_docker() {
     docker-compose -f "${ROOT}/docker/docker-compose.yml" up -d rabbitmq
     sleep 5
@@ -67,7 +71,7 @@ function kill_all() {
 # Calls a GET to zipkin to dependencies
 function check_trace() {
     echo -e "\nChecking if Zipkin has stored the trace"
-    local STRING_TO_FIND="\"parent\":\"frontend\",\"child\":\"backend\",\"callCount\":2"
+    local STRING_TO_FIND="\"parent\":\"frontend\",\"child\":\"rabbitmq\",\"callCount\":1},{\"parent\":\"rabbitmq\",\"child\":\"backend\",\"callCount\":1},{\"parent\":\"frontend\",\"child\":\"backend\",\"callCount\":2"
     local CURRENT_TIME=`python -c 'import time; print int(round(time.time() * 1000))'`
     local URL_TO_CALL="http://localhost:9411/api/v1/dependencies?endTs=$CURRENT_TIME"
     READY_FOR_TESTS="no"
@@ -130,9 +134,10 @@ We will do the following steps to achieve this:
 03) Run Sleuth server
 04) Wait for it to start
 05) Hit the frontend twice (GET http://localhost:8081)
-06) No exceptions should take place
-07) Kill all apps
-08) Assert that Zipkin stored spans
+06) Hit the frontend to /message endpoint to trigger a message (GET http://localhost:8081/message)
+07) No exceptions should take place
+08) Kill all apps
+09) Assert that Zipkin stored spans (2 x HTTP and 1 x messaging)
 
 _______ _________ _______  _______ _________
 (  ____ \\__   __/(  ___  )(  ____ )\__   __/
@@ -159,4 +164,5 @@ curl_local_health_endpoint 8081
 run_maven_exec "Backend"
 curl_local_health_endpoint 9000
 send_a_test_request
+send_a_test_request_to_message
 check_trace
