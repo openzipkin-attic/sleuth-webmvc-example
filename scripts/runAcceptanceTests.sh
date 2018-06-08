@@ -137,7 +137,7 @@ We will do the following steps to achieve this:
 06) Hit the frontend to /message endpoint to trigger a message (GET http://localhost:8081/message)
 07) No exceptions should take place
 08) Kill all apps
-09) Assert that Zipkin stored spans (2 x HTTP and 1 x messaging)
+09) Assert that Zipkin stored spans (2 x HTTP and 2 x messaging)
 
 _______ _________ _______  _______ _________
 (  ____ \\__   __/(  ___  )(  ____ )\__   __/
