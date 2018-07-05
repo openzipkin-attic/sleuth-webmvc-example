@@ -59,6 +59,7 @@ function send_a_test_request_to_message() {
 
 function run_docker() {
     docker-compose -f "${ROOT}/docker/docker-compose.yml" kill || echo "Failed to kill any docker containers"
+    docker kill "$(docker ps | grep rabbitmq | cut -f1 -d ' ')" || echo "Failed to kill rabbitmq"
     docker-compose -f "${ROOT}/docker/docker-compose.yml" pull
     docker-compose -f "${ROOT}/docker/docker-compose.yml" up -d rabbitmq
     sleep 5
