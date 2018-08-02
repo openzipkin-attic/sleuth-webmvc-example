@@ -68,7 +68,7 @@ function kill_all() {
 function check_trace() {
     echo -e "\nChecking if Zipkin has stored the trace"
     local STRING_TO_FIND="\"parent\":\"frontend\",\"child\":\"backend\",\"callCount\":2"
-    local CURRENT_TIME=`python -c 'import time; print int(round(time.time() * 1000))'`
+    local CURRENT_TIME=`python -c 'import time; print(int(round(time.time() * 1000)))'`
     local URL_TO_CALL="http://localhost:9411/api/v2/dependencies?endTs=$CURRENT_TIME"
     READY_FOR_TESTS="no"
     for i in $( seq 1 "${RETRIES}" ); do
