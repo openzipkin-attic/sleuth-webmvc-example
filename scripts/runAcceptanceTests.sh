@@ -15,26 +15,23 @@ function build_the_app() {
   ./mvnw clean install
 }
 
-function run_maven_exec() {
-  local CLASS_NAME=$1
-  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG >${LOGS_DIR}/${CLASS_NAME}.log &"
-  echo -e "\n\nTrying to run [$EXPRESSION]"
-  eval ${EXPRESSION}
-  pid=$!
-  echo ${pid} > ${LOGS_DIR}/${CLASS_NAME}.pid
-  echo -e "[${CLASS_NAME}] process pid is [${pid}]"
-  echo -e "Logs are under [${LOGS_DIR}${CLASS_NAME}.log]\n"
-  return 0
+function our_docker_compose() {
+    docker-compose -f "${ROOT}/docker/docker-compose.yml" "$@"
+}
+
+function docker_exec() {
+    local SERVICE="$1"; shift
+    our_docker_compose exec "$SERVICE" "$@"
 }
 
 # ${RETRIES} number of times will try to curl to /health endpoint to passed port $1 and host $2
 function curl_health_endpoint() {
-    local PORT=$1
-    local PASSED_HOST="${2:-$HEALTH_HOST}"
+    local SERVICE="$1"
+    local PORT="$2"
     local READY_FOR_TESTS=1
     for i in $( seq 1 "${RETRIES}" ); do
         sleep "${WAIT_TIME}"
-        curl --fail -m 5 "${PASSED_HOST}:${PORT}/actuator/health" && READY_FOR_TESTS=0 && break
+        docker_exec $SERVICE curl --fail -m 5 "127.0.0.1:${PORT}/actuator/health" && READY_FOR_TESTS=0 && break
         echo "Fail #$i/${RETRIES}... will try again in [${WAIT_TIME}] seconds"
     done
     if [[ "${READY_FOR_TESTS}" == 1 ]] ; then
@@ -50,13 +47,17 @@ function curl_local_health_endpoint() {
 }
 
 function send_a_test_request() {
-    curl --fail -m 5 "127.0.0.1:8081" && curl --fail -m 5 "127.0.0.1:8081" && echo -e "\n\nSuccessfully sent two test requests!!!"
+    docker_exec frontend curl --fail -m 5 "127.0.0.1:8081" || return 1
+    docker_exec frontend curl --fail -m 5 "127.0.0.1:8081" || return 1
+    echo -e "\n\nSuccessfully sent two test requests!!!"
 }
 
 function run_docker() {
-    docker-compose -f "${ROOT}/docker/docker-compose.yml" kill || echo "Failed to kill any docker containers"
-    docker-compose -f "${ROOT}/docker/docker-compose.yml" pull
-    docker-compose -f "${ROOT}/docker/docker-compose.yml" up -d
+    our_docker_compose kill || echo "Failed to kill any docker containers"
+    our_docker_compose pull
+    our_docker_compose up --build -d
+    our_docker_compose logs --follow frontend > "${LOGS_DIR}/Frontend.log" &
+    our_docker_compose logs --follow backend > "${LOGS_DIR}/Backend.log" &
 }
 
 # kills all apps
@@ -74,7 +75,7 @@ function check_trace() {
     for i in $( seq 1 "${RETRIES}" ); do
         sleep "${WAIT_TIME}"
         echo -e "Sending a GET to $URL_TO_CALL . This is the response:\n"
-        docker-compose -f docker/docker-compose.yml exec zipkin curl -sS --fail "$URL_TO_CALL" | grep ${STRING_TO_FIND} &&  READY_FOR_TESTS="yes" && break
+        docker_exec zipkin curl -sS --fail "$URL_TO_CALL" | grep ${STRING_TO_FIND} &&  READY_FOR_TESTS="yes" && break
         echo "Fail #$i/${RETRIES}... will try again in [${WAIT_TIME}] seconds"
     done
     if [[ "${READY_FOR_TESTS}" == "yes" ]] ; then
@@ -86,29 +87,9 @@ function check_trace() {
     fi
 }
 
-# The function uses Maven Wrapper - if you're using Maven you have to have it on your classpath
-# and change this function
-function extractMavenProperty() {
-	local prop="${1}"
-	MAVEN_PROPERTY=$(./mvnw -q  \
- -Dexec.executable="echo"  \
- -Dexec.args="\${${prop}}"  \
- --non-recursive  \
- org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)
-	# In some spring cloud projects there is info about deactivating some stuff
-	MAVEN_PROPERTY=$(echo "${MAVEN_PROPERTY}" | tail -1)
-	# In Maven if there is no property it prints out ${propname}
-	if [[ "${MAVEN_PROPERTY}" == "\${${prop}}" ]]; then
-		echo ""
-	else
-		echo "${MAVEN_PROPERTY}"
-	fi
-}
-
 # VARIABLES
 ROOT=`pwd`
 LOGS_DIR="${ROOT}/target/"
-HEALTH_HOST="127.0.0.1"
 RETRIES=10
 WAIT_TIME=5
 
@@ -119,14 +100,11 @@ cat <<'EOF'
 This Bash file will try to see if a Boot app using Sleuth is working fine.
 We will do the following steps to achieve this:
 
-01) Run Sleuth client
-02) Wait for it to start
-03) Run Sleuth server
-04) Wait for it to start
-05) Hit the frontend twice (GET http://localhost:8081)
-06) No exceptions should take place
-07) Kill all apps
-08) Assert that Zipkin stored spans
+01) Run Zipkin, Sleuth client, and Sleuth server
+02) Hit the frontend twice (GET http://localhost:8081)
+03) No exceptions should take place
+04) Kill all apps
+05) Assert that Zipkin stored spans
 
 _______ _________ _______  _______ _________
 (  ____ \\__   __/(  ___  )(  ____ )\__   __/
@@ -138,19 +116,19 @@ _______ _________ _______  _______ _________
 \_______)   )_(   |/     \||/   \__/   )_(
 EOF
 
-kill_all || echo -e "\n\nNothing to kill\n\n"
-echo -e "\n\nRunning docker\n\n"
-run_docker
-
 if [[ "${KILL_AT_THE_END}" == "yes" ]]; then
     trap "{ kill_all; }" EXIT
 fi
 
 echo -e "\n\nRunning apps\n\n"
 build_the_app
-run_maven_exec "Frontend"
-curl_local_health_endpoint 8081
-run_maven_exec "Backend"
-curl_local_health_endpoint 9000
+
+kill_all || echo -e "\n\nNothing to kill\n\n"
+echo -e "\n\nRunning docker\n\n"
+run_docker
+
+curl_health_endpoint zipkin 9411
+curl_health_endpoint frontend 8081
+curl_health_endpoint backend 9000
 send_a_test_request
 check_trace

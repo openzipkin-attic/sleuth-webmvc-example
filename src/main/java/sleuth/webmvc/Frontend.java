@@ -16,8 +16,10 @@ public class Frontend {
 
   @Autowired RestTemplate restTemplate;
 
+  String backendBaseUrl = System.getProperty("spring.example.backendBaseUrl", "http://localhost:9000");
+
   @RequestMapping("/") public String callBackend() {
-    return restTemplate.getForObject("http://localhost:9000/api", String.class);
+    return restTemplate.getForObject(backendBaseUrl + "/api", String.class);
   }
 
   @Bean RestTemplate restTemplate() {
