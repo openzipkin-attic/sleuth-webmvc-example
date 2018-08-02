@@ -39,6 +39,7 @@ jobs:
           command: ./scripts/runAcceptanceTests.sh
 
       - run:
+          when: always
           name: Collect logs
           command: |
             mkdir /tmp/artifacts
