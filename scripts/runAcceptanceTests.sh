@@ -12,12 +12,12 @@ set -o errexit
 
 # FUNCTIONS
 function build_the_app() {
-  ./mvnw clean install ${ENV_VARS}
+  ./mvnw clean install
 }
 
 function run_maven_exec() {
   local CLASS_NAME=$1
-  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG >${LOGS_DIR}/${CLASS_NAME}.log &"
+  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG >${LOGS_DIR}/${CLASS_NAME}.log &"
   echo -e "\n\nTrying to run [$EXPRESSION]"
   eval ${EXPRESSION}
   pid=$!
@@ -111,12 +111,6 @@ LOGS_DIR="${ROOT}/target/"
 HEALTH_HOST="127.0.0.1"
 RETRIES=10
 WAIT_TIME=5
-CURRENT_SLEUTH_VERSION=$( extractMavenProperty "sleuth.version" )
-echo "Current Sleuth Version is [${CURRENT_SLEUTH_VERSION}]"
-NEW_SLEUTH_VERSION="${CURRENT_SLEUTH_VERSION%.*}.BUILD-SNAPSHOT"
-echo "New Sleuth Version is [${NEW_SLEUTH_VERSION}]"
-ENV_VARS=${ENV_VARS:--Dsleuth.version=${NEW_SLEUTH_VERSION}}
-echo "Will run the build with env vars [${ENV_VARS}]"
 
 mkdir -p target
 
