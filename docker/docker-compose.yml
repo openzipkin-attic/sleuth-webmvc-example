@@ -1,4 +1,4 @@
-version: '2'
+version: '3.2'
 
 services:
   # The zipkin process services the UI, and also exposes a POST endpoint that
@@ -9,3 +9,23 @@ services:
     ports:
       # Port used for the Zipkin UI and HTTP Api
       - 9411:9411
+
+  frontend:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    volumes:
+      - type: bind
+        source: ${HOME}/.m2
+        target: /home/circleci/.m2
+    command: Frontend
+
+  backend:
+      build:
+        context: ../
+        dockerfile: docker/Dockerfile
+      volumes:
+        - type: bind
+          source: ${HOME}/.m2
+          target: /home/circleci/.m2
+      command: Backend
