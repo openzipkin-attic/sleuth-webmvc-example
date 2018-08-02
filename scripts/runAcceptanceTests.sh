@@ -12,7 +12,7 @@ set -o errexit
 
 # FUNCTIONS
 function build_the_app() {
-  ./mvnw clean install
+    ./mvnw clean install dependency:copy-dependencies
 }
 
 function our_docker_compose() {
