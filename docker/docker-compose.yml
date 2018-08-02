@@ -14,18 +14,10 @@ services:
     build:
       context: ../
       dockerfile: docker/Dockerfile
-    volumes:
-      - type: bind
-        source: ${HOME}/.m2
-        target: /home/circleci/.m2
     command: Frontend
 
   backend:
       build:
         context: ../
         dockerfile: docker/Dockerfile
-      volumes:
-        - type: bind
-          source: ${HOME}/.m2
-          target: /home/circleci/.m2
       command: Backend
