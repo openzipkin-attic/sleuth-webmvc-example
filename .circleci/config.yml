@@ -32,6 +32,8 @@ jobs:
           paths:
             - ~/.m2
 
+      - setup_remote_docker
+
       - run:
           name: Run acceptance tests
           command: ./scripts/runAcceptanceTests.sh
