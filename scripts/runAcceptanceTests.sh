@@ -21,7 +21,7 @@ function our_docker_compose() {
 
 function docker_exec() {
     local SERVICE="$1"; shift
-    our_docker_compose exec "$SERVICE" "$@"
+    our_docker_compose exec -T "$SERVICE" "$@"
 }
 
 # ${RETRIES} number of times will try to curl to /health endpoint to passed port $1 and host $2
