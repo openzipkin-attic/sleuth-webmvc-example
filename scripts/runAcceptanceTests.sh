@@ -64,13 +64,19 @@ function send_a_test_request_to_message() {
 function run_docker() {
     docker-compose -f "${ROOT}/docker/docker-compose.yml" pull
     docker-compose -f "${ROOT}/docker/docker-compose.yml" up -d rabbitmq
-    sleep 5
+    echo -e "\n\nWaiting for rabbit to start\n\n"
+    sleep 30
     docker-compose -f "${ROOT}/docker/docker-compose.yml" up -d zipkin
 }
 
 # kills all apps
 function kill_all() {
     ${ROOT}/scripts/kill.sh
+}
+
+function print_all_logs() {
+  echo -e "\n\nPrinting docker compose logs\n\n"
+  docker-compose -f "docker/docker-compose.yml" logs --tail="all"
 }
 
 # Calls a GET to zipkin to dependencies
@@ -168,13 +174,11 @@ echo -e "\n\nRunning docker\n\n"
 run_docker
 
 if [[ "${KILL_AT_THE_END}" == "yes" ]]; then
-    trap "{ kill_all; }" EXIT
+    trap "{ kill_all;print_all_logs; }" EXIT
 fi
 
 echo -e "\n\nRunning apps\n\n"
 build_the_app
-echo -e "\n\nWaiting for rabbit to start\n\n"
-sleep 5
 run_maven_exec "Frontend" "${FRONTEND_PORT}"
 curl_local_health_endpoint "${FRONTEND_PORT}"
 run_maven_exec "Backend" "${BACKEND_PORT}"
