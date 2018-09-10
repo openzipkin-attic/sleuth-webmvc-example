@@ -173,6 +173,8 @@ fi
 
 echo -e "\n\nRunning apps\n\n"
 build_the_app
+echo -e "\n\nWaiting for rabbit to start\n\n"
+sleep 5
 run_maven_exec "Frontend" "${FRONTEND_PORT}"
 curl_local_health_endpoint "${FRONTEND_PORT}"
 run_maven_exec "Backend" "${BACKEND_PORT}"
