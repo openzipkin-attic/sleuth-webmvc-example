@@ -28,7 +28,7 @@ public class Backend {
   public static void main(String[] args) {
     SpringApplication.run(Backend.class,
         "--spring.application.name=backend",
-        "--server.port=9000"
+        "--server.port=" + System.getProperty("server.port", "9000")
     );
   }
 

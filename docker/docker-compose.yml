@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   # The zipkin process services the UI, and also exposes a POST endpoint that
@@ -10,12 +10,11 @@ services:
       - RABBIT_ADDRESSES=rabbitmq:5672
     ports:
       # Port used for the Zipkin UI and HTTP Api
-      - 9411:9411
+      - ${ZIPKIN_PORT:-9411}:9411
     depends_on:
       - rabbitmq
 
   rabbitmq:
     image: rabbitmq:management
     ports:
-      - 5672:5672
-      - 15672:15672
+      - ${RABBIT_PORT:-5672}:5672

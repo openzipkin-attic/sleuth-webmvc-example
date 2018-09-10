@@ -9,15 +9,19 @@ set -o errexit
 (docker-compose --help > /dev/null 2>&1 && echo "Docker Compose installed") || (echo "No docker-compose detected :(" && exit 1)
 (python --help > /dev/null 2>&1 && echo "Python installed") || (echo "No python detected :(" && exit 1)
 
-
 # FUNCTIONS
 function build_the_app() {
   ./mvnw clean install ${ENV_VARS}
 }
 
+function random_port() {
+  python -c 'import socket; s=socket.socket(); s.bind(("", 0)); print(s.getsockname()[1]); s.close()'
+}
+
 function run_maven_exec() {
   local CLASS_NAME=$1
-  local EXPRESSION="nohup ./mvnw exec:java -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG >${LOGS_DIR}/${CLASS_NAME}.log &"
+  local PORT=$2
+  local EXPRESSION="nohup ./mvnw exec:java -Dserver.port="${PORT}" -Dspring.rabbitmq.port="${RABBIT_PORT}" -Dexec.mainClass=sleuth.webmvc.${CLASS_NAME} ${ENV_VARS} -Dlogging.level.org.springframework.cloud.sleuth=DEBUG >${LOGS_DIR}/${CLASS_NAME}.log &"
   echo -e "\n\nTrying to run [$EXPRESSION]"
   eval ${EXPRESSION}
   pid=$!
@@ -50,16 +54,14 @@ function curl_local_health_endpoint() {
 }
 
 function send_a_test_request() {
-    curl --fail -m 5 "127.0.0.1:8081" && curl --fail -m 5 "127.0.0.1:8081" && echo -e "\n\nSuccessfully sent two test requests!!!"
+    curl --fail -m 5 "127.0.0.1:${FRONTEND_PORT}" && curl --fail -m 5 "127.0.0.1:${FRONTEND_PORT}" && echo -e "\n\nSuccessfully sent two test requests!!!"
 }
 
 function send_a_test_request_to_message() {
-    curl --fail -m 5 "127.0.0.1:8081/message" && echo -e "\n\nSuccessfully triggered a message!!! Now will wait for 5 seconds for Frontend to get it..." && sleep 5
+    curl --fail -m 5 "127.0.0.1:${FRONTEND_PORT}/message" && echo -e "\n\nSuccessfully triggered a message!!! Now will wait for 5 seconds for Backend to get it..." && sleep 5
 }
 
 function run_docker() {
-    docker-compose -f "${ROOT}/docker/docker-compose.yml" kill || echo "Failed to kill any docker containers"
-    docker kill "$(docker ps | grep rabbitmq | cut -f1 -d ' ')" || echo "Failed to kill rabbitmq"
     docker-compose -f "${ROOT}/docker/docker-compose.yml" pull
     docker-compose -f "${ROOT}/docker/docker-compose.yml" up -d rabbitmq
     sleep 5
@@ -119,11 +121,20 @@ HEALTH_HOST="127.0.0.1"
 RETRIES=10
 WAIT_TIME=5
 CURRENT_SLEUTH_VERSION=$( extractMavenProperty "sleuth.version" )
+export RABBIT_PORT KILL_AT_THE_END FRONTEND_PORT BACKEND_PORT
+RABBIT_PORT="$(random_port)"
+FRONTEND_PORT="$(random_port)"
+BACKEND_PORT="$(random_port)"
+ZIPKIN_PORT="$(random_port)"
+KILL_AT_THE_END="${KILL_AT_THE_END:-yes}"
+
 echo "Current Sleuth Version is [${CURRENT_SLEUTH_VERSION}]"
 NEW_SLEUTH_VERSION="${CURRENT_SLEUTH_VERSION%.*}.BUILD-SNAPSHOT"
 echo "New Sleuth Version is [${NEW_SLEUTH_VERSION}]"
 ENV_VARS=${ENV_VARS:--Dsleuth.version=${NEW_SLEUTH_VERSION}}
 echo "Will run the build with env vars [${ENV_VARS}]"
+echo "Will run Rabbit on port [${RABBIT_PORT}] and Zipkin on port [${ZIPKIN_PORT}]"
+echo "Will run Frontent on port [${FRONTEND_PORT}] and Backend on port [${BACKEND_PORT}]"
 
 mkdir -p target
 
@@ -136,8 +147,8 @@ We will do the following steps to achieve this:
 02) Wait for it to start
 03) Run Sleuth server
 04) Wait for it to start
-05) Hit the frontend twice (GET http://localhost:8081)
-06) Hit the frontend to /message endpoint to trigger a message (GET http://localhost:8081/message)
+05) Hit the frontend twice (GET http://localhost:${FRONTEND_PORT})
+06) Hit the frontend to /message endpoint to trigger a message (GET http://localhost:${FRONTEND_PORT}/message)
 07) No exceptions should take place
 08) Kill all apps
 09) Assert that Zipkin stored spans (2 x HTTP and 2 x messaging)
@@ -162,10 +173,10 @@ fi
 
 echo -e "\n\nRunning apps\n\n"
 build_the_app
-run_maven_exec "Frontend"
-curl_local_health_endpoint 8081
-run_maven_exec "Backend"
-curl_local_health_endpoint 9000
+run_maven_exec "Frontend" "${FRONTEND_PORT}"
+curl_local_health_endpoint "${FRONTEND_PORT}"
+run_maven_exec "Backend" "${BACKEND_PORT}"
+curl_local_health_endpoint "${BACKEND_PORT}"
 send_a_test_request
 send_a_test_request_to_message
 check_trace

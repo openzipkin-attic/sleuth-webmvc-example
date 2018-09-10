@@ -23,7 +23,11 @@ public class Frontend {
   @Autowired RabbitTemplate rabbitTemplate;
 
   @RequestMapping("/") public String callBackend() {
-    return restTemplate.getForObject("http://localhost:9000/api", String.class);
+    return restTemplate.getForObject("http://localhost:" + backendPort() + "/api", String.class);
+  }
+
+  private String backendPort() {
+    return System.getenv("BACKEND_PORT") != null ? System.getenv("BACKEND_PORT") : "9000";
   }
 
   @Bean RestTemplate restTemplate() {
@@ -38,7 +42,7 @@ public class Frontend {
   public static void main(String[] args) {
     SpringApplication.run(Frontend.class,
         "--spring.application.name=frontend",
-        "--server.port=8081"
+        "--server.port=" + System.getProperty("server.port", "8081")
     );
   }
 

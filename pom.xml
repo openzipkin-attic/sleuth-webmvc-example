@@ -16,7 +16,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <sleuth.version>2.0.0.RC2</sleuth.version>
+    <sleuth.version>2.1.0.BUILD-SNAPSHOT</sleuth.version>
   </properties>
 
   <dependencies>
@@ -33,7 +33,7 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
     </dependency>
-    <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v2/spans) -->
+    <!-- Sends trace data to zipkin over messaging -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-sleuth-zipkin</artifactId>
@@ -42,7 +42,6 @@
     <dependency>
       <groupId>org.springframework.amqp</groupId>
       <artifactId>spring-rabbit</artifactId>
-      <version>2.0.3.RELEASE</version>
     </dependency>
   </dependencies>
 
