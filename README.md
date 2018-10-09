@@ -48,6 +48,13 @@ Sleuth layers on the [Brave](https://github.com/openzipkin/brave) project, so ca
 works with brave. It can also use transports besides http to send data to a Zipkin compatible service.
 Here are a few small examples that showcase commonly requested features:
 
+## Apache Http Client Tracing
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-apachehc-tracing) changes the
+example to use Apache `HttpClient` instead of `RestTemplate` to make the
+call from the frontend to the backend.
+
+https://github.com/openzipkin/brave/tree/master/instrumentation/httpclient
+
 ## MySQL Tracing
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-mysql-tracing) changes the example to read the timestamp from MySQL instead of
 the Spring Boot Process. It adds a brave tracing interceptor to add
