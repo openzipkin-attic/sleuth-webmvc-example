@@ -33,6 +33,16 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
     </dependency>
+
+    <!-- Use apache httpclient in the example, instead of RestTemplate -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.zipkin.brave</groupId>
+      <artifactId>brave-instrumentation-httpclient</artifactId>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
