@@ -49,6 +49,9 @@ works with brave. It can also use transports besides http to send data to a Zipk
 Here are a few small examples that showcase commonly requested features:
 
 ## Apache Http Client Tracing
+```bash
+git checkout -b add-apachehc-tracing
+```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-apachehc-tracing) changes the
 example to use Apache `HttpClient` instead of `RestTemplate` to make the
 call from the frontend to the backend.
@@ -56,6 +59,9 @@ call from the frontend to the backend.
 https://github.com/openzipkin/brave/tree/master/instrumentation/httpclient
 
 ## MySQL Tracing
+```bash
+git checkout -b add-mysql-tracing
+```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-mysql-tracing) changes the example to read the timestamp from MySQL instead of
 the Spring Boot Process. It adds a brave tracing interceptor to add
 details to the existing trace.
@@ -63,6 +69,9 @@ details to the existing trace.
 https://github.com/openzipkin/brave/tree/master/instrumentation/mysql
 
 ## RabbitMQ Tracing
+```bash
+git checkout -b add-rabbit-tracing
+```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-rabbit-tracing) changes the example to invoke the backend with RabbitMQ
 instead of WebMVC. Sleuth automatically configures Brave's
 spring-rabbit to add trace details.
@@ -70,12 +79,18 @@ spring-rabbit to add trace details.
 https://github.com/openzipkin/brave/tree/master/instrumentation/spring-rabbit
 
 ## Dubbo Tracing
+```bash
+git checkout -b add-dubbo-tracing
+```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-dubbo-tracing) changes the example to call a Dubbo backend instead of WebMVC.
 It uses Brave's RPC filter to add details to the existing trace.
 
 https://github.com/openzipkin/brave/tree/master/instrumentation/dubbo-rpc
 
 ## Customizing with OpenTracing
+```bash
+git checkout -b add-opentracing
+```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-opentracing) changes the example to add a lookup tag using the default
 `SpanCustomizer` and OpenTracing's Tracer api. Users can choose which
 api makes most sense for them to expose to business code.
