@@ -24,8 +24,10 @@ Next, you can view traces that went through the backend via http://localhost:941
 ## Starting the Services
 In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
 ```bash
-$ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
-$ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
+# ensure you are running JDK 11
+$ ./mvnw -version
+$ MAVEN_OPTS="-XX:StartFlightRecording" ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
+$ MAVEN_OPTS="-XX:StartFlightRecording" ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
 ```
 
 Next, run [Zipkin](https://zipkin.io/), which stores and queries traces reported by the above services.
@@ -34,6 +36,16 @@ Next, run [Zipkin](https://zipkin.io/), which stores and queries traces reported
 curl -sSL https://zipkin.io/quickstart.sh | bash -s
 java -jar zipkin.jar
 ```
+
+Note that not only are traces collected in Zipkin, but ID correlation exists in both logs and in
+Java Flight Recorder. To view the recordings, you need [JDK Mission Control 7](http://jdk.java.net/jmc/).
+
+Once a flight is recorded, look for "Zipkin/Scope" in the Event browser:
+
+<img width="1020" alt="flight recording" src="https://user-images.githubusercontent.com/64215/49850602-1b45d900-fe19-11e8-83fd-14b498128f09.png">
+
+You can then copy/paste the trace ID into the zipkin UI, or use log
+correlation to further debug a problem.
 
 ## Configuration tips
 * The service name in the Zipkin UI defaults to the application name
