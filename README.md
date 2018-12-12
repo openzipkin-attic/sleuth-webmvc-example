@@ -87,6 +87,14 @@ It uses Brave's RPC filter to add details to the existing trace.
 
 https://github.com/openzipkin/brave/tree/master/instrumentation/dubbo-rpc
 
+## Java Flight Recorder
+```bash
+git checkout -b add-jfr-context
+```
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-jfr-context) changes the example to add trace IDs to Java Flight recorder "Zipkin/Scope" events.
+
+https://github.com/openzipkin/brave/tree/master/context/jfr
+
 ## Customizing with OpenTracing
 ```bash
 git checkout -b add-opentracing
