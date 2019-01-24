@@ -16,19 +16,8 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
 
-    <sleuth.version>2.1.0.RC3</sleuth.version>
+    <sleuth.version>2.1.0.RELEASE</sleuth.version>
   </properties>
-
-  <repositories>
-    <repository>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>http://repo.spring.io/milestone</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <dependencies>
     <dependency>
@@ -38,21 +27,17 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      </dependency>
-    <!-- Sleuth automatically adds trace interceptors when in the classpath -->
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-sleuth</artifactId>
     </dependency>
     <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v2/spans) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+      <artifactId>spring-cloud-starter-zipkin</artifactId>
     </dependency>
   </dependencies>
 
   <dependencyManagement>
     <dependencies>
+      <!-- Sleuth automatically adds trace interceptors when in the classpath -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-sleuth</artifactId>
