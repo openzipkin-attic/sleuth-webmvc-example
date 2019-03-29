@@ -75,7 +75,7 @@ function check_trace() {
     for i in $( seq 1 "${RETRIES}" ); do
         sleep "${WAIT_TIME}"
         echo -e "Sending a GET to $URL_TO_CALL . This is the response:\n"
-        docker_exec zipkin curl -sS --fail "$URL_TO_CALL" | grep ${STRING_TO_FIND} &&  READY_FOR_TESTS="yes" && break
+        curl -sS --fail "$URL_TO_CALL" | grep ${STRING_TO_FIND} &&  READY_FOR_TESTS="yes" && break
         echo "Fail #$i/${RETRIES}... will try again in [${WAIT_TIME}] seconds"
     done
     if [[ "${READY_FOR_TESTS}" == "yes" ]] ; then
@@ -128,7 +128,7 @@ echo -e "\n\nRunning docker\n\n"
 run_docker
 
 echo "Waiting for Zipkin to start"
-sleep 30
+sleep 15
 echo "Assuming that Zipkin is running"
 curl_health_endpoint frontend 8081
 curl_health_endpoint backend 9000
