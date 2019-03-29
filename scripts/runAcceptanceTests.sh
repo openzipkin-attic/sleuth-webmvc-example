@@ -127,7 +127,9 @@ kill_all || echo -e "\n\nNothing to kill\n\n"
 echo -e "\n\nRunning docker\n\n"
 run_docker
 
-curl_health_endpoint zipkin 9411
+echo "Waiting for Zipkin to start"
+sleep 30
+echo "Assuming that Zipkin is running"
 curl_health_endpoint frontend 8081
 curl_health_endpoint backend 9000
 send_a_test_request
