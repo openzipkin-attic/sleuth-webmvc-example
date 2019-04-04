@@ -44,9 +44,10 @@ java -jar zipkin.jar
   * `logging.pattern.level=%d{ABSOLUTE} [%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n`
 
 # Going further
-Sleuth layers on the [Brave](https://github.com/openzipkin/brave) project, so can re-use any code that
-works with brave. It can also use transports besides http to send data to a Zipkin compatible service.
-Here are a few small examples that showcase commonly requested features:
+A distributed trace will only include connections that are configured (instrumented). You may be using
+some libraries that aren't automatically configured.
+
+Here are a few small examples that showcase how to stitch-in commonly requested features.
 
 ## Apache Http Client Tracing
 ```bash
@@ -106,3 +107,10 @@ api makes most sense for them to expose to business code.
 Under the covers, this uses the brave-opentracing bridge:
 
 https://github.com/openzipkin-contrib/brave-opentracing
+
+## Need something else not here?
+
+Sleuth layers on the [Brave](https://github.com/openzipkin/brave) project, so can re-use any code that
+works with brave. It can also use transports besides http to send data to a Zipkin compatible service.
+
+Contact us on [gitter](https://gitter.im/openzipkin/zipkin) if you need more help!
