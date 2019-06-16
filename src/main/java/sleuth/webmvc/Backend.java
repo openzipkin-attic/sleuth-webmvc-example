@@ -1,22 +1,18 @@
 package sleuth.webmvc;
 
-import java.util.Date;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.annotation.KafkaListener;
 
 @EnableAutoConfiguration
-@RestController
+@EnableKafka
 public class Backend {
 
-  @RequestMapping("/api")
-  public String printDate(@RequestHeader(name = "user_name", required = false) String username) {
-    if (username != null) {
-      return new Date().toString() + " " + username;
-    }
-    return new Date().toString();
+  @KafkaListener(topics = "hello")
+  public void onMessage(ConsumerRecord<String, String> message) {
+    System.err.println("hello " + message.value());
   }
 
   public static void main(String[] args) {
