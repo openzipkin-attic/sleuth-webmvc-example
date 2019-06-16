@@ -1,29 +1,29 @@
 package sleuth.webmvc;
 
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @EnableAutoConfiguration
+@EnableBinding(Source.class)
 @RestController
 @CrossOrigin // So that javascript can be hosted elsewhere
 public class Frontend {
 
-  @Autowired RestTemplate restTemplate;
+  @Autowired StreamBridge streamBridge;
 
-  String backendBaseUrl = System.getProperty("spring.example.backendBaseUrl", "http://localhost:9000");
-
-  @RequestMapping("/") public String callBackend() {
-    return restTemplate.getForObject(backendBaseUrl + "/api", String.class);
-  }
-
-  @Bean RestTemplate restTemplate() {
-    return new RestTemplate();
+  @RequestMapping("/")
+  public String callBackend() {
+    String messageId = UUID.randomUUID().toString();
+    streamBridge.send(Source.OUTPUT, messageId);
+    return "sent " + messageId;
   }
 
   public static void main(String[] args) {

@@ -19,7 +19,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-    <sleuth.version>2.2.3.RELEASE</sleuth.version>
+    <spring-cloud.version>Hoxton.SR5</spring-cloud.version>
   </properties>
 
   <dependencies>
@@ -31,20 +31,24 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
+    <!-- Sleuth automatically adds trace interceptors when in the classpath -->
     <!-- Sends trace data to zipkin over http (defaults to http://localhost:9411/api/v2/spans) -->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-zipkin</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>
     <dependencies>
-      <!-- Sleuth automatically adds trace interceptors when in the classpath -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-sleuth-dependencies</artifactId>
-        <version>${sleuth.version}</version>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
