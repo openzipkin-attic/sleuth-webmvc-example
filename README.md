@@ -2,13 +2,14 @@
 This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Zipkin](http://zipkin.io/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
 
 Here's an example of what it looks like
-<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/75970720-bd188080-5f0b-11ea-99c5-1c3108994827.png">
+<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/77631180-2c234b00-6f87-11ea-8b8a-47706c75214b.png">
 
 This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin). There's probably room to enroll if it hasn't completed, yet, and you are interested in the general topic.
 
 # Implementation Overview
 
 Web requests are served by [Spring MVC](https://spring.io/guides/gs/rest-service/) controllers, and tracing is automatically performed for you by [Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/).
+The backend listens for Kafka messages using [spring-kafka](https://spring.io/projects/spring-kafka).
 
 This example intentionally avoids advanced topics like async and load balancing, even though Spring Cloud Sleuth supports that, too. Once you get familiar with things, you can play with more interesting [Spring Cloud](http://projects.spring.io/spring-cloud/) components.
 
@@ -16,12 +17,18 @@ This example intentionally avoids advanced topics like async and load balancing,
 This example has two services: frontend and backend. They both report trace data to Zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
 
 Once the services are started, open http://localhost:8081/
-* This will call the backend (http://localhost:9000/api) and show the result, which defaults to a formatted date.
+* This will send a message to the Kafka backend topic and show the SendResult.
+  * The backend listens for a message on the Kafka topic, printing the ConsumerRecord to the console.
 
 Next, you can view traces that went through the backend via http://localhost:9411/?serviceName=backend
 * This is a locally run Zipkin service which keeps traces in memory
 
 ## Starting the Services
+If you don't already have Kafka running, you can use our Docker image:
+```bash
+$ docker run -d --name zipkin-kafka -p 19092:19092 openzipkin/zipkin-kafka
+```
+
 In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
 ```bash
 $ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
@@ -41,7 +48,7 @@ java -jar zipkin.jar
 * All incoming requests are sampled and that decision is honored downstream.
   * `spring.sleuth.sampler.probability=1.0`
 * The below pattern adds trace and span identifiers into log output
-  * `logging.pattern.level=%d{ABSOLUTE} [%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n`
+  * `logging.pattern.level=%d{ABSOLUTE} [%X{traceId}/%X{spanId}] %-5p [%t] %C{2} - %m%n`
 
 # Going further
 A distributed trace will only include connections that are configured (instrumented). You may be using
