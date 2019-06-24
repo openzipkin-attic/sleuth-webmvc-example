@@ -2,7 +2,7 @@
 This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Zipkin](http://zipkin.io/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
 
 Here's an example of what it looks like
-<img width="972" alt="zipkin screen shot" src="https://cloud.githubusercontent.com/assets/64215/16300537/ff858dd6-3972-11e6-8e4c-4f7f4a6c707a.png">
+<img width="928" alt="Screenshot 2019-06-24 at 4 00 27 PM" src="https://user-images.githubusercontent.com/64215/60001539-3c756500-9699-11e9-92f2-d04b6c002214.png">
 
 This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin). There's probably room to enroll if it hasn't completed, yet, and you are interested in the general topic.
 
@@ -78,6 +78,17 @@ instead of WebMVC. Sleuth automatically configures Brave's
 spring-rabbit to add trace details.
 
 https://github.com/openzipkin/brave/tree/master/instrumentation/spring-rabbit
+
+## Kafka Tracing
+```bash
+git checkout -b add-kafka-tracing
+```
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-kafka-tracing) changes the example to invoke the backend with Kafka
+instead of WebMVC. Sleuth automatically configures Brave's
+kafka-clients instrumentation when spring-kafka is present.
+
+https://github.com/openzipkin/brave/tree/master/instrumentation/kafka-clients
+https://github.com/spring-cloud/spring-cloud-sleuth/blob/v2.1.1.RELEASE/spring-cloud-sleuth-core/src/main/java/org/springframework/cloud/sleuth/instrument/messaging/TraceMessagingAutoConfiguration.java#L110
 
 ## Dubbo Tracing
 ```bash
