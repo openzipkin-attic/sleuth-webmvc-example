@@ -1,23 +1,28 @@
 package sleuth.webmvc;
 
-import java.util.Date;
+import javax.jms.Message;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.web.bind.annotation.RestController;
 
 @EnableAutoConfiguration
-@RestController
+@EnableJms
 public class Backend {
 
-  @RequestMapping("/api") public String printDate() {
-    return new Date().toString();
+  @JmsListener(destination = "backend")
+  public void onMessage(Message m) {
+    System.err.println(m);
   }
 
   public static void main(String[] args) {
     SpringApplication.run(Backend.class,
         "--spring.application.name=backend",
-        "--server.port=9000"
+        // startup without any web framework
+        "--spring.main.web-environment=false",
+        "--server.port=9000" // set port for actuator
     );
   }
 }
