@@ -91,9 +91,7 @@ https://github.com/openzipkin/brave/tree/master/instrumentation/kafka-clients
 https://github.com/spring-cloud/spring-cloud-sleuth/blob/v2.1.1.RELEASE/spring-cloud-sleuth-core/src/main/java/org/springframework/cloud/sleuth/instrument/messaging/TraceMessagingAutoConfiguration.java#L110
 
 ## JMS Tracing
-[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-jms-tracing) changes the example to invoke the backend with ActiveMQ instead of WebMVC. Sleuth automatically configures Brave's spring-jms to add trace details.
-
-https://github.com/openzipkin/brave/tree/master/instrumentation/spring-jms
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-jms-tracing) changes the example to invoke the backend with ActiveMQ instead of WebMVC. Sleuth automatically configures Spring JmsTemplate and JmsListener to add trace details.
 
 ## Dubbo Tracing
 ```bash
