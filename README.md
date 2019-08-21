@@ -67,7 +67,7 @@ git checkout -b add-mysql-tracing
 the Spring Boot Process. It adds a brave tracing interceptor to add
 details to the existing trace.
 
-https://github.com/openzipkin/brave/tree/master/instrumentation/mysql
+https://github.com/openzipkin/brave/tree/master/instrumentation/mysql8
 
 ## RabbitMQ Tracing
 ```bash
