@@ -9,8 +9,8 @@ case "$1" in
     ;;
   * )
     echo "No command specified. Run the docker image with either the frontend or backend command, e.g.,
-    docker run -it --rm -p 8081 openzipkin/example-sleuth-webmvc frontend
-    docker run -it --rm -p 9000 openzipkin/example-sleuth-webmvc backend"
+    docker run -it --rm -p 8081:8081 openzipkin/example-sleuth-webmvc frontend
+    docker run -it --rm -p 9000:9000 openzipkin/example-sleuth-webmvc backend"
     exit 1
 esac
 
