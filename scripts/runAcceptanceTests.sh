@@ -56,6 +56,7 @@ function run_docker() {
     our_docker_compose kill || echo "Failed to kill any docker containers"
     our_docker_compose pull
     our_docker_compose up --build -d
+    our_docker_compose logs --follow zipkin > "${LOGS_DIR}/Zipkin.log" &
     our_docker_compose logs --follow frontend > "${LOGS_DIR}/Frontend.log" &
     our_docker_compose logs --follow backend > "${LOGS_DIR}/Backend.log" &
 }
