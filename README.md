@@ -122,6 +122,26 @@ Under the covers, this uses the brave-opentracing bridge:
 
 https://github.com/openzipkin-contrib/brave-opentracing
 
+## Docker
+
+A docker image containing the example can be built using
+
+```bash
+$ docker build -t openzipkin/example-sleuth-webmvc -f docker/Dockerfile .
+```
+
+The backend can be started with a command similar to
+
+```bash
+$ docker run -it --rm -p 9000:9000 openzipkin/example-sleuth-webmvc backend
+```
+
+The frontend can be started with a command similar to
+            
+```bash
+$ docker run -it --rm -p 8081:8081 openzipkin/example-sleuth-webmvc frontend
+```
+
 ## Need something else not here?
 
 Sleuth layers on the [Brave](https://github.com/openzipkin/brave) project, so can re-use any code that

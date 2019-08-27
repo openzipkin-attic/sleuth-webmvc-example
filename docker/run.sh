@@ -1,6 +1,19 @@
 #!/bin/bash
 
-set -eou pipefail
+case "$1" in
+  f|frontend|Frontend )
+    CLASS_NAME=Frontend
+    ;;
+  b|backend|Backend )
+    CLASS_NAME=Backend
+    ;;
+  * )
+    echo "No command specified. Run the docker image with either the frontend or backend command, e.g.,
+    docker run -it --rm -p 8081:8081 openzipkin/example-sleuth-webmvc frontend
+    docker run -it --rm -p 9000:9000 openzipkin/example-sleuth-webmvc backend"
+    exit 1
+esac
 
-CLASS_NAME="$1"; shift
-java -cp "target/dependency/*:target/*" -Dlogging.level.org.springframework.cloud.sleuth=DEBUG -Dspring.zipkin.baseUrl=http://zipkin:9411 -Dspring.example.backendBaseUrl=http://backend:9000 sleuth.webmvc.$CLASS_NAME
+java -cp target/sleuth-webmvc-*-exec.jar -Dlogging.level.org.springframework.cloud.sleuth=DEBUG \
+  -Dspring.zipkin.baseUrl=http://zipkin:9411 -Dspring.example.backendBaseUrl=http://backend:9000 \
+  -Dloader.main=sleuth.webmvc.$CLASS_NAME org.springframework.boot.loader.PropertiesLauncher

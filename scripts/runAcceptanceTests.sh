@@ -24,14 +24,14 @@ function docker_exec() {
     our_docker_compose exec -T "$SERVICE" "$@"
 }
 
-# ${RETRIES} number of times will try to curl to /health endpoint to passed port $1 and host $2
-function curl_health_endpoint() {
+# ${RETRIES} number of times will try to fetch the /health endpoint to passed port $1 and host $2
+function fetch_health_endpoint() {
     local SERVICE="$1"
     local PORT="$2"
     local READY_FOR_TESTS=1
     for i in $( seq 1 "${RETRIES}" ); do
         sleep "${WAIT_TIME}"
-        docker_exec $SERVICE curl --fail -m 5 "127.0.0.1:${PORT}/actuator/health" && READY_FOR_TESTS=0 && break
+        docker_exec $SERVICE wget -q -O /dev/null -T 5 "127.0.0.1:${PORT}/actuator/health" && READY_FOR_TESTS=0 && break
         echo "Fail #$i/${RETRIES}... will try again in [${WAIT_TIME}] seconds"
     done
     if [[ "${READY_FOR_TESTS}" == 1 ]] ; then
@@ -41,14 +41,14 @@ function curl_health_endpoint() {
     return ${READY_FOR_TESTS}
 }
 
-# ${RETRIES} number of times will try to curl to /health endpoint to passed port $1 and localhost
-function curl_local_health_endpoint() {
-    curl_health_endpoint $1 "127.0.0.1"
+# ${RETRIES} number of times will try to fetch the /health endpoint to passed port $1 and localhost
+function fetch_local_health_endpoint() {
+    fetch_health_endpoint $1 "127.0.0.1"
 }
 
 function send_a_test_request() {
-    docker_exec frontend curl --fail -m 5 "127.0.0.1:8081" || return 1
-    docker_exec frontend curl --fail -m 5 "127.0.0.1:8081" || return 1
+    docker_exec frontend wget -q -O /dev/null -T 5 "127.0.0.1:8081" || return 1
+    docker_exec frontend wget -q -O /dev/null -T 5 "127.0.0.1:8081" || return 1
     echo -e "\n\nSuccessfully sent two test requests!!!"
 }
 
@@ -56,6 +56,7 @@ function run_docker() {
     our_docker_compose kill || echo "Failed to kill any docker containers"
     our_docker_compose pull
     our_docker_compose up --build -d
+    our_docker_compose logs --follow zipkin > "${LOGS_DIR}/Zipkin.log" &
     our_docker_compose logs --follow frontend > "${LOGS_DIR}/Frontend.log" &
     our_docker_compose logs --follow backend > "${LOGS_DIR}/Backend.log" &
 }
@@ -75,7 +76,7 @@ function check_trace() {
     for i in $( seq 1 "${RETRIES}" ); do
         sleep "${WAIT_TIME}"
         echo -e "Sending a GET to $URL_TO_CALL . This is the response:\n"
-        curl -sS --fail "$URL_TO_CALL" | grep ${STRING_TO_FIND} &&  READY_FOR_TESTS="yes" && break
+        docker_exec zipkin wget -S -O - "$URL_TO_CALL" -T 5 | grep ${STRING_TO_FIND} && READY_FOR_TESTS="yes" && break
         echo "Fail #$i/${RETRIES}... will try again in [${WAIT_TIME}] seconds"
     done
     if [[ "${READY_FOR_TESTS}" == "yes" ]] ; then
@@ -130,7 +131,7 @@ run_docker
 echo "Waiting for Zipkin to start"
 sleep 15
 echo "Assuming that Zipkin is running"
-curl_health_endpoint frontend 8081
-curl_health_endpoint backend 9000
+fetch_health_endpoint frontend 8081
+fetch_health_endpoint backend 9000
 send_a_test_request
 check_trace
