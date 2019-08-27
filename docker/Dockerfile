@@ -2,7 +2,7 @@ FROM maven:3-jdk-11-slim
 
 ADD . /code
 
-RUN cd /code && mvn package -DskipTests=true
+RUN cd /code && mvn -B --no-transfer-progress package -DskipTests=true
 
 FROM gcr.io/distroless/java:11-debug
 
