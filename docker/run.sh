@@ -16,4 +16,4 @@ esac
 
 java -cp target/sleuth-webmvc-*-exec.jar -Dlogging.level.org.springframework.cloud.sleuth=DEBUG \
   -Dspring.zipkin.baseUrl=http://zipkin:9411 -Dspring.example.backendBaseUrl=http://backend:9000 \
-  -Dloader.main=sleuth.webmvc.$CLASS_NAME org.springframework.boot.loader.PropertiesLauncher
+  -Dloader.main=sleuth.webmvc.$CLASS_NAME $JAVA_OPTS org.springframework.boot.loader.PropertiesLauncher
