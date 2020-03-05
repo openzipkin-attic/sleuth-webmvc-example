@@ -2,7 +2,7 @@
 This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Zipkin](http://zipkin.io/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
 
 Here's an example of what it looks like
-<img width="928" alt="Screenshot 2019-06-24 at 4 00 27 PM" src="https://user-images.githubusercontent.com/64215/60001539-3c756500-9699-11e9-92f2-d04b6c002214.png">
+<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/75970720-bd188080-5f0b-11ea-99c5-1c3108994827.png">
 
 This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin). There's probably room to enroll if it hasn't completed, yet, and you are interested in the general topic.
 
@@ -10,16 +10,16 @@ This example was initially made for a [Distributed Tracing Webinar on June 30th,
 
 Web requests are served by [Spring MVC](https://spring.io/guides/gs/rest-service/) controllers, and tracing is automatically performed for you by [Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/).
 
-This example intentionally avoids advanced topics like async and load balancing, eventhough Spring Cloud Sleuth supports that, too. Once you get familiar with things, you can play with more interesting [Spring Cloud](http://projects.spring.io/spring-cloud/) components.
+This example intentionally avoids advanced topics like async and load balancing, even though Spring Cloud Sleuth supports that, too. Once you get familiar with things, you can play with more interesting [Spring Cloud](http://projects.spring.io/spring-cloud/) components.
 
 # Running the example
-This example has two services: frontend and backend. They both report trace data to zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
+This example has two services: frontend and backend. They both report trace data to Zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
 
 Once the services are started, open http://localhost:8081/
 * This will call the backend (http://localhost:9000/api) and show the result, which defaults to a formatted date.
 
 Next, you can view traces that went through the backend via http://localhost:9411/?serviceName=backend
-* This is a locally run zipkin service which keeps traces in memory
+* This is a locally run Zipkin service which keeps traces in memory
 
 ## Starting the Services
 In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
@@ -28,7 +28,7 @@ $ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
 $ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
 ```
 
-Next, run [Zipkin](http://zipkin.io/), which stores and queries traces reported by the above services.
+Next, run [Zipkin](https://zipkin.io/), which stores and queries traces reported by the above services.
 
 ```bash
 curl -sSL https://zipkin.io/quickstart.sh | bash -s
@@ -48,6 +48,14 @@ A distributed trace will only include connections that are configured (instrumen
 some libraries that aren't automatically configured.
 
 Here are a few small examples that showcase how to stitch-in commonly requested features.
+
+## Spring WebFlux Tracing
+```bash
+git checkout -b add-webflux-tracing
+```
+[This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-webflux-tracing) changes the
+example to serve requests with reactive `Mono` controllers, using `WebClient` instead of
+`RestTemplate` to make the call from the frontend to the backend.
 
 ## Apache Http Client Tracing
 ```bash
