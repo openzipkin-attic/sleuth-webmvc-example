@@ -2,15 +2,15 @@
 This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Zipkin](http://zipkin.io/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
 
 Here's an example of what it looks like
-<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/75970720-bd188080-5f0b-11ea-99c5-1c3108994827.png">
+<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/75969698-47f87b80-5f0a-11ea-8784-05d694e4a546.png">
 
 This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin). There's probably room to enroll if it hasn't completed, yet, and you are interested in the general topic.
 
 # Implementation Overview
 
-Web requests are served by [Spring MVC](https://spring.io/guides/gs/rest-service/) controllers, and tracing is automatically performed for you by [Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/).
+Web requests are served by [Spring WebFlux](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html) controllers, and tracing is automatically performed for you by [Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/).
 
-This example intentionally avoids advanced topics like async and load balancing, even though Spring Cloud Sleuth supports that, too. Once you get familiar with things, you can play with more interesting [Spring Cloud](http://projects.spring.io/spring-cloud/) components.
+This example intentionally avoids advanced topics like load balancing, even though Spring Cloud Sleuth supports that, too. Once you get familiar with things, you can play with more interesting [Spring Cloud](http://projects.spring.io/spring-cloud/) components.
 
 # Running the example
 This example has two services: frontend and backend. They both report trace data to Zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
