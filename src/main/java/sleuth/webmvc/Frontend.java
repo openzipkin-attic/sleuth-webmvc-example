@@ -1,5 +1,7 @@
 package sleuth.webmvc;
 
+import org.jboss.logging.MDC;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -19,7 +21,9 @@ public class Frontend {
   String backendBaseUrl = System.getProperty("spring.example.backendBaseUrl", "http://localhost:9000");
 
   @RequestMapping("/") public String callBackend() {
-    return restTemplate.getForObject(backendBaseUrl + "/api", String.class);
+
+  	return MDC.getMap().toString();
+    //return restTemplate.getForObject(backendBaseUrl + "/api", String.class);
   }
 
   @Bean RestTemplate restTemplate() {
