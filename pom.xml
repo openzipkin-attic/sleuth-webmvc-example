@@ -59,6 +59,7 @@
   </dependencyManagement>
 
   <build>
+    <finalName>sleuth-example</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -66,14 +67,27 @@
         <version>${spring-boot.version}</version>
         <executions>
           <execution>
+            <id>repackage-backend</id>
             <goals>
               <goal>repackage</goal>
             </goals>
+            <configuration>
+              <mainClass>sleuth.webmvc.Backend</mainClass>
+              <classifier>backend</classifier>
+            </configuration>
+          </execution>
+          <execution>
+            <id>repackage-frontend</id>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+            <configuration>
+              <mainClass>sleuth.webmvc.Frontend</mainClass>
+              <classifier>frontend</classifier>
+            </configuration>
           </execution>
         </executions>
         <configuration>
-          <mainClass>sleuth.webmvc.Backend</mainClass>
-          <classifier>exec</classifier>
           <executable>true</executable>
         </configuration>
       </plugin>

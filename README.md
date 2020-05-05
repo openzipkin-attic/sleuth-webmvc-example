@@ -22,10 +22,26 @@ Next, you can view traces that went through the backend via http://localhost:941
 * This is a locally run Zipkin service which keeps traces in memory
 
 ## Starting the Services
-In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
+First build the project:
+
 ```bash
-$ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Backend
-$ ./mvnw compile exec:java -Dexec.mainClass=sleuth.webmvc.Frontend
+$ ./mvnw package
+```
+
+This builds two executable jar files in the `target` directory: `sleuth-example-backend.jar` and `sleuth-example-frontend.jar`.
+
+In a separate tab or window, start each of [sleuth.webmvc.Frontend](/src/main/java/sleuth/webmvc/Frontend.java) and [sleuth.webmvc.Backend](/src/main/java/sleuth/webmvc/Backend.java):
+
+```bash
+$ java -jar target/sleuth-example-backend.jar
+$ java -jar target/sleuth-example-frontend.jar
+```
+
+If you are making changes to the sample and you'd like to try them out, you can run the latest state as follows: 
+
+```bash
+$ ./mvnw spring-boot:run -Dspring-boot.run.main-class=sleuth.webmvc.Backend
+$ ./mvnw spring-boot:run -Dspring-boot.run.main-class=sleuth.webmvc.Frontend
 ```
 
 Next, run [Zipkin](https://zipkin.io/), which stores and queries traces reported by the above services.
