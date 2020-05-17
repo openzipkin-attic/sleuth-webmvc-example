@@ -41,7 +41,7 @@ java -jar zipkin.jar
 * All incoming requests are sampled and that decision is honored downstream.
   * `spring.sleuth.sampler.probability=1.0`
 * The below pattern adds trace and span identifiers into log output
-  * `logging.pattern.level=%d{ABSOLUTE} [%X{X-B3-TraceId}/%X{X-B3-SpanId}] %-5p [%t] %C{2} - %m%n`
+  * `logging.pattern.level=%d{ABSOLUTE} [%X{traceId}/%X{spanId}] %-5p [%t] %C{2} - %m%n`
 
 # Going further
 A distributed trace will only include connections that are configured (instrumented). You may be using
