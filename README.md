@@ -53,7 +53,7 @@ Here are a few small examples that showcase how to stitch-in commonly requested 
 
 ## Spring WebFlux Tracing
 ```bash
-git checkout -b add-webflux-tracing
+git checkout add-webflux-tracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-webflux-tracing) changes the
 example to serve requests with reactive `Mono` controllers, using `WebClient` instead of
@@ -61,7 +61,7 @@ example to serve requests with reactive `Mono` controllers, using `WebClient` in
 
 ## Apache Http Client Tracing
 ```bash
-git checkout -b add-apachehc-tracing
+git checkout add-apachehc-tracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-apachehc-tracing) changes the
 example to use Apache `HttpClient` instead of `RestTemplate` to make the
@@ -71,7 +71,7 @@ https://github.com/openzipkin/brave/tree/master/instrumentation/httpclient
 
 ## MySQL Tracing
 ```bash
-git checkout -b add-mysql-tracing
+git checkout add-mysql-tracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-mysql-tracing) changes the example to read the timestamp from MySQL instead of
 the Spring Boot Process. It adds a brave tracing interceptor to add
@@ -81,7 +81,7 @@ https://github.com/openzipkin/brave/tree/master/instrumentation/mysql8
 
 ## RabbitMQ Tracing
 ```bash
-git checkout -b add-rabbit-tracing
+git checkout add-rabbit-tracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-rabbit-tracing) changes the example to invoke the backend with RabbitMQ
 instead of WebMVC. Sleuth automatically configures Brave's
@@ -91,7 +91,7 @@ https://github.com/openzipkin/brave/tree/master/instrumentation/spring-rabbit
 
 ## Kafka Tracing
 ```bash
-git checkout -b add-kafka-tracing
+git checkout add-kafka-tracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-kafka-tracing) changes the example to invoke the backend with Kafka
 instead of WebMVC. Sleuth automatically configures Brave's
@@ -105,7 +105,7 @@ https://github.com/spring-cloud/spring-cloud-sleuth/blob/v2.1.1.RELEASE/spring-c
 
 ## Dubbo Tracing
 ```bash
-git checkout -b add-dubbo-tracing
+git checkout add-dubbo-tracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-dubbo-tracing) changes the example to call a Dubbo backend instead of WebMVC.
 It uses Brave's RPC filter to add details to the existing trace.
@@ -114,7 +114,7 @@ https://github.com/openzipkin/brave/tree/master/instrumentation/dubbo-rpc
 
 ## Java Flight Recorder
 ```bash
-git checkout -b add-jfr-context
+git checkout add-jfr-context
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-jfr-context) changes the example to add trace IDs to Java Flight recorder "Zipkin/Scope" events.
 
@@ -122,7 +122,7 @@ https://github.com/openzipkin/brave/tree/master/context/jfr
 
 ## Customizing with OpenTracing
 ```bash
-git checkout -b add-opentracing
+git checkout add-opentracing
 ```
 [This](https://github.com/openzipkin/sleuth-webmvc-example/compare/add-opentracing) changes the example to add a lookup tag using the default
 `SpanCustomizer` and OpenTracing's Tracer api. Users can choose which
