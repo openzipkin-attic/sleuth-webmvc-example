@@ -2,7 +2,7 @@
 This is an example app where two Spring Boot (Java) services collaborate on an http request. Notably, timing of these requests are recorded into [Zipkin](http://zipkin.io/), a distributed tracing system. This allows you to see the how long the whole operation took, as well how much time was spent in each service.
 
 Here's an example of what it looks like
-<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/77631180-2c234b00-6f87-11ea-8b8a-47706c75214b.png">
+<img width="995" alt="Zipkin Screenshot" src="https://user-images.githubusercontent.com/64215/85193306-cdf1d400-b2f9-11ea-843c-1686a4541cc7.png">
 
 This example was initially made for a [Distributed Tracing Webinar on June 30th, 2016](https://spring.io/blog/2016/05/24/webinar-understanding-microservice-latency-an-introduction-to-distributed-tracing-and-zipkin). There's probably room to enroll if it hasn't completed, yet, and you are interested in the general topic.
 
@@ -17,8 +17,8 @@ This example intentionally avoids advanced topics like async and load balancing,
 This example has two services: frontend and backend. They both report trace data to Zipkin. To setup the demo, you need to start Frontend, Backend and Zipkin.
 
 Once the services are started, open http://localhost:8081/
-* This will send a message to the Kafka backend topic and show the SendResult.
-  * The backend listens for a message on the Kafka topic, printing the ConsumerRecord to the console.
+* This will send a message to the Kafka backend topic and returns a UUID.
+  * The backend listens for a message on the Kafka topic, printing that UUID to the console.
 
 Next, you can view traces that went through the backend via http://localhost:9411/?serviceName=backend
 * This is a locally run Zipkin service which keeps traces in memory
@@ -49,8 +49,9 @@ java -jar zipkin.jar
   * `spring.sleuth.sampler.probability=1.0`
 * The below pattern adds trace and span identifiers into log output
   * `logging.pattern.level=%d{ABSOLUTE} [%X{traceId}/%X{spanId}] %-5p [%t] %C{2} - %m%n`
+* In Zipkin, the default service name for the message broker is "kafka". You can override like this:
+  * `spring.sleuth.messaging.kafka.remote-service-name=hello-broker`
 
-# Going further
 A distributed trace will only include connections that are configured (instrumented). You may be using
 some libraries that aren't automatically configured.
 

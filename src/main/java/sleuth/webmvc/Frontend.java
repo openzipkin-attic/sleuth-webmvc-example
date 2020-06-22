@@ -1,5 +1,8 @@
 package sleuth.webmvc;
 
+import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,8 +18,12 @@ public class Frontend {
 
   @Autowired KafkaTemplate<String, String> kafkaTemplate;
 
-  @RequestMapping("/") public String callBackend() throws Exception {
-    return kafkaTemplate.send("backend", "Hello World").get().toString();
+  @RequestMapping("/")
+  public CompletableFuture<String> callBackend() {
+    String messageId = UUID.randomUUID().toString();
+    return kafkaTemplate.send("hello", messageId)
+        .completable()
+        .thenApply(r -> "sent " + messageId);
   }
 
   public static void main(String[] args) {
